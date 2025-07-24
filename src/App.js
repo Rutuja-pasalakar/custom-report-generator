@@ -12,7 +12,6 @@ import {
   XAxis,
   YAxis,
   Tooltip,
-  Legend,
   ResponsiveContainer,
 } from "recharts";
 import html2canvas from "html2canvas";
@@ -47,7 +46,7 @@ const lineData = [
 
 const SendIcon = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M2 21L23 12L2 3V10L17 12L2 14V21Z" fill="currentColor"/>
+    <path d="M2 21L23 12L2 3V10L17 12L2 14V21Z" fill="currentColor" />
   </svg>
 );
 
@@ -67,7 +66,7 @@ const App = () => {
 
   const handleGenerate = () => {
     if (!inputValue.trim()) return;
-    
+
     setIsGenerating(true);
     // Simulate API call delay
     setTimeout(() => {
@@ -84,54 +83,54 @@ const App = () => {
   };
 
   const exportPDF = () => {
-  const input = printRef.current;
-  html2canvas(input, {
-    scale: 2,
-    useCORS: true,
-    allowTaint: true,
-  }).then((canvas) => {
-    const imgData = canvas.toDataURL("image/png");
-    const pdf = new jsPDF("p", "mm", "a4");
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-    const pageHeight = pdf.internal.pageSize.getHeight();
+    const input = printRef.current;
+    html2canvas(input, {
+      scale: 2,
+      useCORS: true,
+      allowTaint: true,
+    }).then((canvas) => {
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF("p", "mm", "a4");
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+      const pageHeight = pdf.internal.pageSize.getHeight();
 
-    // 🏷️ Add Headline
-    pdf.setFontSize(18);
-    pdf.text(`Equity Research Report`, pdfWidth / 2, 15, { align: "center" });
-    pdf.setFontSize(14);
-    pdf.text(`Company: ${inputValue}`, pdfWidth / 2, 23, { align: "center" });
+      // 🏷️ Add Headline
+      pdf.setFontSize(18);
+      pdf.text(`Custom Report`, pdfWidth / 2, 15, { align: "center" });
+      pdf.setFontSize(14);
+      pdf.text(`Company: ${inputValue}`, pdfWidth / 2, 23, { align: "center" });
 
-    const contentTop = 30; // 🧠 Leave space for headline
+      const contentTop = 30; // 🧠 Leave space for headline
 
-    if (pdfHeight > pageHeight - contentTop) {
-      const pages = Math.ceil(pdfHeight / (pageHeight - contentTop));
+      if (pdfHeight > pageHeight - contentTop) {
+        const pages = Math.ceil(pdfHeight / (pageHeight - contentTop));
 
-      for (let i = 0; i < pages; i++) {
-        if (i > 0) {
-          pdf.addPage();
-          pdf.setFontSize(18);
-          pdf.text(`Equity Research Report`, pdfWidth / 2, 15, { align: "center" });
-          pdf.setFontSize(14);
-          pdf.text(`Company: ${inputValue}`, pdfWidth / 2, 23, { align: "center" });
+        for (let i = 0; i < pages; i++) {
+          if (i > 0) {
+            pdf.addPage();
+            pdf.setFontSize(18);
+            pdf.text(`Custom Report`, pdfWidth / 2, 15, { align: "center" });
+            pdf.setFontSize(14);
+            pdf.text(`Company: ${inputValue}`, pdfWidth / 2, 23, { align: "center" });
+          }
+
+          pdf.addImage(
+            imgData,
+            "PNG",
+            0,
+            contentTop - i * (pageHeight - contentTop),
+            pdfWidth,
+            pdfHeight
+          );
         }
-
-        pdf.addImage(
-          imgData,
-          "PNG",
-          0,
-          contentTop - i * (pageHeight - contentTop),
-          pdfWidth,
-          pdfHeight
-        );
+      } else {
+        pdf.addImage(imgData, "PNG", 0, contentTop, pdfWidth, pdfHeight);
       }
-    } else {
-      pdf.addImage(imgData, "PNG", 0, contentTop, pdfWidth, pdfHeight);
-    }
 
-    pdf.save(`${inputValue.replace(/[^a-zA-Z0-9]/g, '_')}_report.pdf`);
-  });
-};
+      pdf.save(`${inputValue.replace(/[^a-zA-Z0-9]/g, '_')}_report.pdf`);
+    });
+  };
 
 
   const resetReport = () => {
@@ -150,10 +149,10 @@ const App = () => {
               </svg>
             </div>
             <h1 className="text-4xl font-bold text-gray-900 mb-4">
-              Equity Research Report Generator
+              AI-Powered Report Generator
             </h1>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Generate comprehensive equity research reports with interactive charts, financial analysis, and professional insights
+            <p className="text-md text-gray-600 max-w-2xl mx-auto">
+              Generate professional-grade custom reports with visuals, summaries, and data insights.
             </p>
           </div>
 
@@ -163,8 +162,8 @@ const App = () => {
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyPress={handleKeyPress}
-                placeholder="Enter company name or ticker symbol (e.g., Reliance Industries, AAPL, TSLA)..."
-                className="w-full p-4 pr-16 border-2 border-gray-200 rounded-xl resize-none focus:border-blue-500 focus:outline-none transition-colors duration-200 text-lg"
+                placeholder="Enter your topic or keyword (e.g., Sales Summary, Tesla Q2, Market Trends)..."
+                className="w-full p-4 pr-16 border-2 border-gray-200 rounded-xl resize-none focus:border-blue-500 focus:outline-none transition-colors duration-200 text-md"
                 rows="3"
               />
               <button
@@ -175,7 +174,7 @@ const App = () => {
                 <SendIcon />
               </button>
             </div>
-            
+
             <div className="mt-6 flex flex-wrap gap-2">
               {["Reliance Industries", "Apple Inc", "Tesla", "Microsoft", "Google"].map((suggestion) => (
                 <button
@@ -190,7 +189,7 @@ const App = () => {
           </div>
 
           <div className="mt-8 text-center text-gray-500 text-sm">
-            <p>Press Enter to generate report • Powered by AI-driven financial analysis</p>
+            <p>Press Enter to generate report • Powered by AI-driven analysis</p>
           </div>
         </div>
       </div>
@@ -208,7 +207,7 @@ const App = () => {
             </svg>
           </div>
           <h2 className="text-2xl font-semibold text-gray-900 mb-2">Generating Report</h2>
-          <p className="text-gray-600">Analyzing financial data for {inputValue}...</p>
+          <p className="text-gray-600">Analyzing report data for {inputValue}...</p>
         </div>
       </div>
     );
@@ -220,27 +219,32 @@ const App = () => {
         <div className="flex items-center justify-between mb-8">
           <div>
             <h1 className="text-3xl font-bold text-gray-900 mb-2">
-              Equity Research Report
+              Custom Report
             </h1>
             <p className="text-gray-600">Generated for: <span className="font-semibold">{inputValue}</span></p>
           </div>
           <div className="flex gap-3">
-            <button
-              onClick={resetReport}
-              className="px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors duration-200 font-medium"
-            >
-              New Report
-            </button>
-            <button
-              onClick={exportPDF}
-              className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors duration-200 font-medium flex items-center gap-2"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
-              Export PDF
-            </button>
-          </div>
+  <button
+    onClick={resetReport}
+    className="inline-flex items-center gap-2 px-6 py-3 bg-gray-700 text-white rounded-2xl shadow-md hover:bg-gray-800 transition-all duration-200 text-sm font-semibold"
+  >
+    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+    </svg>
+    New Report
+  </button>
+
+  <button
+    onClick={exportPDF}
+    className="inline-flex items-center gap-2 px-6 py-3 bg-green-600 text-white rounded-2xl shadow-md hover:bg-green-700 transition-all duration-200 text-sm font-semibold"
+  >
+    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 16v-8m0 8l-3-3m3 3l3-3m6 6H6a2 2 0 01-2-2V6a2 2 0 012-2h7l5 5v9a2 2 0 01-2 2z" />
+    </svg>
+    Export PDF
+  </button>
+</div>
+
         </div>
 
         <div ref={printRef} className="bg-white rounded-xl shadow-lg border border-gray-200 p-8">
@@ -282,16 +286,16 @@ const App = () => {
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={lineData}>
                     <CartesianGrid strokeDasharray="3 3" stroke="#e0e7ff" />
-                    <XAxis 
-                      dataKey="name" 
+                    <XAxis
+                      dataKey="name"
                       tick={{ fontSize: 12, fill: '#6b7280' }}
                       axisLine={{ stroke: '#d1d5db' }}
                     />
-                    <YAxis 
+                    <YAxis
                       tick={{ fontSize: 12, fill: '#6b7280' }}
                       axisLine={{ stroke: '#d1d5db' }}
                     />
-                    <Tooltip 
+                    <Tooltip
                       contentStyle={{
                         backgroundColor: '#ffffff',
                         border: '1px solid #e5e7eb',
@@ -299,10 +303,10 @@ const App = () => {
                         boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
                       }}
                     />
-                    <Line 
-                      type="monotone" 
-                      dataKey="price" 
-                      stroke="#10b981" 
+                    <Line
+                      type="monotone"
+                      dataKey="price"
+                      stroke="#10b981"
                       strokeWidth={3}
                       dot={{ fill: '#10b981', strokeWidth: 2, r: 4 }}
                       activeDot={{ r: 6, stroke: '#10b981', strokeWidth: 2 }}
@@ -326,16 +330,16 @@ const App = () => {
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={barData}>
                     <CartesianGrid strokeDasharray="3 3" stroke="#e0e7ff" />
-                    <XAxis 
-                      dataKey="name" 
+                    <XAxis
+                      dataKey="name"
                       tick={{ fontSize: 12, fill: '#6b7280' }}
                       axisLine={{ stroke: '#d1d5db' }}
                     />
-                    <YAxis 
+                    <YAxis
                       tick={{ fontSize: 12, fill: '#6b7280' }}
                       axisLine={{ stroke: '#d1d5db' }}
                     />
-                    <Tooltip 
+                    <Tooltip
                       contentStyle={{
                         backgroundColor: '#ffffff',
                         border: '1px solid #e5e7eb',
@@ -344,9 +348,9 @@ const App = () => {
                       }}
                       formatter={(value) => [`₹${value.toLocaleString()} Cr`, 'Revenue']}
                     />
-                    <Bar 
-                      dataKey="revenue" 
-                      fill="#8b5cf6" 
+                    <Bar
+                      dataKey="revenue"
+                      fill="#8b5cf6"
                       radius={[4, 4, 0, 0]}
                     />
                   </BarChart>
@@ -386,7 +390,7 @@ const App = () => {
                         />
                       ))}
                     </Pie>
-                    <Tooltip 
+                    <Tooltip
                       contentStyle={{
                         backgroundColor: '#ffffff',
                         border: '1px solid #e5e7eb',
